@@ -8,7 +8,7 @@ router.get('/', UserController.getAllUsers);
 router.get('/:userId', UserController.getSingleUser);
 router.put('/:userId', UserController.getUpdateUser);
 router.delete('/:userId', UserController.deletedUser);
-// router.put('/:userId/orders', UserController.addProductToDB);
+router.put('/:userId/orders', UserController.addProductToDB);
 // router.get('/:userId/orders', UserController.getOrdersFromDB);
 // router.get('/:userId/orders/total-price', UserController.calculatePrice);
 

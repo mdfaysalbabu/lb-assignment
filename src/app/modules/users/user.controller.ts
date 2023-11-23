@@ -58,7 +58,7 @@ const getSingleUser = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'students is retrieve successfully',
+      message: 'user retrieve successfully',
       data: result,
     });
   } catch (error: any) {
@@ -139,10 +139,40 @@ const deletedUser = async (req: Request, res: Response) => {
   }
 };
 
+const addProductToDB = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+    const orderData = req.body;
+
+    await UserServices.addProductToDB(Number(userId), orderData);
+    res.json({
+      success: true,
+      message: 'Order created successfully!',
+      data: null,
+    });
+  } catch (error: any) {
+    if (error.statusCode === 404) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+    });
+  }
+};
+
 export const UserController = {
   createUser,
   getAllUsers,
   getSingleUser,
   getUpdateUser,
   deletedUser,
+  addProductToDB,
 };
