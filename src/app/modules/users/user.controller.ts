@@ -79,8 +79,70 @@ const getSingleUser = async (req: Request, res: Response) => {
   }
 };
 
+const getUpdateUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+    const userData: any = req.body;
+    const result = await UserServices.getUserUpdateFromDb(
+      Number(userId),
+      userData,
+    );
+
+    res.status(200).json({
+      status: 'success',
+      message: 'User updated successfully',
+      data: result,
+    });
+  } catch (error: any) {
+    if (error.statusCode === 404) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+    });
+  }
+};
+
+const deletedUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    await UserServices.deletedUserFromDb(Number(userId));
+
+    res.status(200).json({
+      success: true,
+      message: 'User deleted successfully!',
+      data: null,
+    });
+  } catch (error: any) {
+    if (error.statusCode === 404) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+    });
+  }
+};
+
 export const UserController = {
   createUser,
   getAllUsers,
-  getSingleUser
+  getSingleUser,
+  getUpdateUser,
+  deletedUser,
 };

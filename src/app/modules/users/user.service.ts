@@ -32,12 +32,41 @@ const getSingleUserFromDb = async (userId: number) => {
     error.statusCode = 404;
     throw error;
   }
-  const someUser= cleanUser(user.toObject());
+  const someUser = cleanUser(user.toObject());
   return someUser;
+};
+
+const getUserUpdateFromDb = async (userId: number, userData: any) => {
+  const user = await User.findOneAndUpdate({ userId }, userData, {
+    new: true,
+    runValidators: true,
+    select: 'password',
+  });
+
+  if (!user) {
+    const error = new Error('User not found') as any;
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const userUpdate = cleanUser(user.toObject());
+  return userUpdate;
+};
+
+const deletedUserFromDb = async (userId: number) => {
+  const user = await User.findOneAndDelete({ userId });
+  if (!user) {
+    const error = new Error('User not found') as any;
+    error.statusCode = 404;
+    throw error;
+  }
+  return user;
 };
 
 export const UserServices = {
   createUserIntoDb,
   getAllUsersFromDb,
-  getSingleUserFromDb
+  getSingleUserFromDb,
+  getUserUpdateFromDb,
+  deletedUserFromDb,
 };
