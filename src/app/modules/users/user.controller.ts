@@ -5,7 +5,7 @@ import { ZodError } from 'zod';
 
 const createUser = async (req: Request, res: Response) => {
   try {
-    const  userData  = req.body;
+    const userData = req.body;
 
     const zodParseData = userValidationSchema.parse(userData);
 
@@ -34,27 +34,53 @@ const createUser = async (req: Request, res: Response) => {
 };
 
 const getAllUsers = async (req: Request, res: Response) => {
-    try {
-      const result = await UserServices.getAllUsersFromDb();
-  
-      res.status(200).json({
-        success: true,
-        message: 'Users fetched successfully!',
-        data: result,
-      });
-    } catch (error: any) {
-      res.status(500).json({
+  try {
+    const result = await UserServices.getAllUsersFromDb();
+
+    res.status(200).json({
+      success: true,
+      message: 'Users fetched successfully!',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'something went wrong',
+      error: error,
+    });
+  }
+};
+
+const getSingleUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+    const result = await UserServices.getSingleUserFromDb(Number(userId));
+
+    res.status(200).json({
+      success: true,
+      message: 'students is retrieve successfully',
+      data: result,
+    });
+  } catch (error: any) {
+    if (error.statusCode === 404) {
+      return res.status(404).json({
         success: false,
-        message: error.message || 'something went wrong',
-        error: error,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
       });
     }
-  };
-
-
-
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+    });
+  }
+};
 
 export const UserController = {
   createUser,
-  getAllUsers
+  getAllUsers,
+  getSingleUser
 };

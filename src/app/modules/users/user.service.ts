@@ -24,9 +24,20 @@ const getAllUsersFromDb = async () => {
   return userAll;
 };
 
+const getSingleUserFromDb = async (userId: number) => {
+  const user = await User.findOne({ userId }, 'password');
 
+  if (!user) {
+    const error = new Error('User not found') as any;
+    error.statusCode = 404;
+    throw error;
+  }
+  const someUser= cleanUser(user.toObject());
+  return someUser;
+};
 
 export const UserServices = {
   createUserIntoDb,
   getAllUsersFromDb,
+  getSingleUserFromDb
 };
