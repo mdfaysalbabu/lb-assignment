@@ -168,6 +168,38 @@ const addProductToDB = async (req: Request, res: Response) => {
   }
 };
 
+const getOrdersFromDB = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+    const orders = await UserServices.getOrdersFromDB(Number(userId));
+
+    if (!orders) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found!',
+      });
+    }
+    res.json({
+      success: true,
+      message: 'Orders fetched successfully!',
+      data: {
+        orders,
+      },
+    });
+  } catch (error: any) {
+    if (error.statusCode === 404) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+  }
+};
+
 export const UserController = {
   createUser,
   getAllUsers,
@@ -175,4 +207,5 @@ export const UserController = {
   getUpdateUser,
   deletedUser,
   addProductToDB,
+  getOrdersFromDB
 };

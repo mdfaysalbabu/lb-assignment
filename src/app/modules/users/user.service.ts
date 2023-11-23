@@ -83,6 +83,18 @@ const addProductToDB = async (userId: number, productData: any) => {
   return finalOrders;
 };
 
+const getOrdersFromDB = async (userId: number) => {
+  const user = await User.findOne({ userId });
+
+  if (!user) {
+    const error = new Error('User not found') as any;
+    error.statusCode = 404;
+    throw error;
+  }
+  const allOrders = user ? user.orders : null;
+  return allOrders;
+};
+
 export const UserServices = {
   createUserIntoDb,
   getAllUsersFromDb,
@@ -90,4 +102,5 @@ export const UserServices = {
   getUserUpdateFromDb,
   deletedUserFromDb,
   addProductToDB,
+  getOrdersFromDB,
 };
