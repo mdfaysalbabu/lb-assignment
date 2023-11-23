@@ -95,6 +95,23 @@ const getOrdersFromDB = async (userId: number) => {
   return allOrders;
 };
 
+const calculatePrice = async (userId: number): Promise<number> => {
+  const user = await User.findOne({ userId });
+
+  if (!user) {
+    const error = new Error('User not found') as any;
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const totalPrice: number =
+    user.orders?.reduce(
+      (data, order) => data + order.price * order.quantity,
+      0,
+    ) || 0;
+  return totalPrice;
+};
+
 export const UserServices = {
   createUserIntoDb,
   getAllUsersFromDb,
@@ -103,4 +120,5 @@ export const UserServices = {
   deletedUserFromDb,
   addProductToDB,
   getOrdersFromDB,
+  calculatePrice
 };
