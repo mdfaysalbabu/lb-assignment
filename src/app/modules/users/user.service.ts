@@ -9,8 +9,6 @@ const cleanUser = (userObject: any) => {
 };
 
 const createUserIntoDb = async (userData: any) => {
-  
-
   const result = await User.create(userData);
 
   const { password, ...cleanUser } = result.toObject();
@@ -105,11 +103,14 @@ const calculatePrice = async (userId: number): Promise<number> => {
     throw error;
   }
 
-  const totalPrice: number =
-    user.orders?.reduce(
-      (data, order) => data + order.price * order.quantity,
-      0,
-    ) || 0;
+  const totalPrice: number = parseFloat(
+    (
+      user.orders?.reduce(
+        (data, order) => data + order.price * order.quantity,
+        0,
+      ) || 0
+    ).toFixed(2),
+  );
   return totalPrice;
 };
 
@@ -121,5 +122,5 @@ export const UserServices = {
   deletedUserFromDb,
   addProductToDB,
   getOrdersFromDB,
-  calculatePrice
+  calculatePrice,
 };
