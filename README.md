@@ -11,3 +11,6 @@
 * use zod validation 
 * use bcrypt for password hashing
 * user eslint and prettier 
+
+## Live Link
+[https://lb-assignment-2.vercel.app]

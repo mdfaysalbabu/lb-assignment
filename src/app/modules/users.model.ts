@@ -5,32 +5,30 @@ import bcrypt from 'bcrypt';
 import config from '../config';
 
 const OrderSchema = new Schema<TOrders>({
-  productName: { type: String, required: true, trim: true },
-  price: { type: Number, required: true },
-  quantity: { type: Number, required: true },
+  productName: { type: String, required: true, trim: true, _id: false },
+  price: { type: Number, required: true, _id: false },
+  quantity: { type: Number, required: true, _id: false },
 });
 
 const userSchema = new Schema<TUser>({
   userId: { type: Number, required: true, unique: true },
-  username: { type: String, required: true, unique: true, trim: true },
+  username: { type: String, required: true, trim: true },
   password: { type: String, required: true },
   fullName: {
-    firstName: { type: String, required: true, trim: true },
-    lastName: { type: String, required: true, trim: true },
+    firstName: { type: String, required: true, trim: true, _id: false },
+    lastName: { type: String, required: true, trim: true, _id: false },
   },
   age: { type: Number, required: true },
   email: { type: String, required: true },
   isActive: { type: Boolean, required: true },
   hobbies: { type: [String], required: true },
   address: {
-    street: { type: String, required: true, trim: true },
-    city: { type: String, required: true, trim: true },
-    country: { type: String, required: true, trim: true },
+    street: { type: String, required: true, trim: true, _id: false },
+    city: { type: String, required: true, trim: true, _id: false },
+    country: { type: String, required: true, trim: true, _id: false },
   },
-  orders: { type: [OrderSchema], default: [] },
+  orders: { type: [OrderSchema], default: [], _id: false },
 });
-
-
 
 userSchema.pre('save', async function (next) {
   const user = this;

@@ -23,7 +23,9 @@ const userValidationSchema = z.object({
   password: z.string({ required_error: 'Password  required' }).max(20),
   fullName: userFullNameValidationSchema,
   age: z.number({ required_error: 'Age  required' }),
-  email: z.string({ required_error: 'Email required' }).email('Invalid email format.'),
+  email: z
+    .string({ required_error: 'Email required' })
+    .email('Invalid email format.'),
   isActive: z.boolean({ required_error: 'isActive  required' }),
   hobbies: z.array(z.string()).default([]),
   address: addressValidationSchema,
