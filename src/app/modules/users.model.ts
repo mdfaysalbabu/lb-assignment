@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from 'mongoose';
-import { TOrders, TUser, userModel } from './users/users.interface';
+import { TOrders, TUser } from './users/users.interface';
 import bcrypt from 'bcrypt';
 import config from '../config';
 
@@ -29,11 +30,7 @@ const userSchema = new Schema<TUser>({
   orders: { type: [OrderSchema], default: [] },
 });
 
-userSchema.statics.isUserExist = async function (userId: number) {
-  const existingUser = await User.findOne({ userId });
 
-  return existingUser;
-};
 
 userSchema.pre('save', async function (next) {
   const user = this;
@@ -50,6 +47,6 @@ userSchema.post('save', function (doc, next) {
   next();
 });
 
-const User = model<TUser,userModel>('user', userSchema);
+const User = model<TUser>('user', userSchema);
 
 export default User;

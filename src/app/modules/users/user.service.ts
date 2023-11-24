@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import User from '../users.model';
 
 const cleanUser = (userObject: any) => {
@@ -6,9 +9,7 @@ const cleanUser = (userObject: any) => {
 };
 
 const createUserIntoDb = async (userData: any) => {
-  if (await User.isUserExist(userData.id)) {
-    throw new Error('user already exist');
-  }
+  
 
   const result = await User.create(userData);
 
@@ -25,7 +26,7 @@ const getAllUsersFromDb = async () => {
 };
 
 const getSingleUserFromDb = async (userId: number) => {
-  const user = await User.findOne({ userId }, 'password');
+  const user = await User.findOne({ userId }, '-password');
 
   if (!user) {
     const error = new Error('User not found') as any;
@@ -40,7 +41,7 @@ const getUserUpdateFromDb = async (userId: number, userData: any) => {
   const user = await User.findOneAndUpdate({ userId }, userData, {
     new: true,
     runValidators: true,
-    select: 'password',
+    select: '-password',
   });
 
   if (!user) {

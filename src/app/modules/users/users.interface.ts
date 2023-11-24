@@ -1,9 +1,9 @@
-import { Model } from 'mongoose';
+
 
 export type TUser = {
   userId: number;
   username: string;
-  password: string; // This should be the hashed password
+  password: string; 
   fullName: {
     firstName: string;
     lastName: string;
@@ -26,7 +26,4 @@ export type TOrders = {
   quantity: number;
 };
 
-export interface userModel extends Model<TUser> {
-  isUserExist(userId: number): Promise<TUser | null>;
- 
-}
+

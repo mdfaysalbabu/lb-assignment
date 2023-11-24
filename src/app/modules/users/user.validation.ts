@@ -7,24 +7,24 @@ export const OrderSchema = z.object({
 });
 
 const userFullNameValidationSchema = z.object({
-  firstName: z.string().min(1).max(20),
-  lastName: z.string().min(1),
+  firstName: z.string({ required_error: 'FirstName required' }).min(1).max(20),
+  lastName: z.string({ required_error: 'LastName required' }).min(1).max(20),
 });
 
 const addressValidationSchema = z.object({
-  street: z.string(),
-  city: z.string(),
-  country: z.string(),
+  street: z.string({ required_error: 'Street required' }),
+  city: z.string({ required_error: 'city required' }),
+  country: z.string({ required_error: 'country required' }),
 });
 
 const userValidationSchema = z.object({
-  userId: z.number(),
-  username: z.string(),
-  password: z.string().max(20),
+  userId: z.number({ required_error: 'UserID  required' }),
+  username: z.string({ required_error: 'Username required' }),
+  password: z.string({ required_error: 'Password  required' }).max(20),
   fullName: userFullNameValidationSchema,
-  age: z.number(),
-  email: z.string().email('Invalid email format.'),
-  isActive: z.boolean(),
+  age: z.number({ required_error: 'Age  required' }),
+  email: z.string({ required_error: 'Email required' }).email('Invalid email format.'),
+  isActive: z.boolean({ required_error: 'isActive  required' }),
   hobbies: z.array(z.string()).default([]),
   address: addressValidationSchema,
   orders: z.array(OrderSchema).default([]),
